@@ -12,5 +12,19 @@
     "nom": "jspo",
     "date": "e",
     "remarque": null
+  },
+  "2": {
+    "lat": 51.86386721819291,
+    "lon": 7.684292653605496,
+    "nom": "Nouveau lieu",
+    "date": "2025-11-06",
+    "remarque": null
+  },
+  "3": {
+    "lat": 50.61128555718198,
+    "lon": 3.9961061338408683,
+    "nom": "Nouveau lieu",
+    "date": null,
+    "remarque": null
   }
 }
