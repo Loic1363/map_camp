@@ -2,8 +2,9 @@ import tkinter as tk
 from tkinter import ttk, simpledialog, messagebox, filedialog
 from datetime import datetime
 from tkintermapview import TkinterMapView
-from app.data_manager import charger_lieux, sauvegarder_lieux, importer_lieux, exporter_lieux
+from .data_manager import charger_lieux, sauvegarder_lieux, importer_lieux, exporter_lieux
 from app.search import rechercher_lieu_api
+
 
 class MapApp(tk.Tk):
     def __init__(self):
@@ -19,14 +20,14 @@ class MapApp(tk.Tk):
 
     def _build_gui(self):
         self.search_frame = ttk.Frame(self)
-        self.search_frame.place(x=10, y=10, width=420, height=40)
+        self.search_frame.pack(side="top", anchor="nw", fill="x")
 
         self.menu_btn = ttk.Button(self.search_frame, text="≡", width=3)
-        self.menu_btn.pack(side="left", padx=(5,5))
+        self.menu_btn.pack(side="left", padx=(5, 5))
 
         self.search_var = tk.StringVar()
         self.search_entry = tk.Entry(self.search_frame, textvariable=self.search_var, width=30, fg='grey', font=('Segoe UI', 14))
-        self.search_entry.pack(side="left", padx=(0,5), fill="x", expand=True)
+        self.search_entry.pack(side="left", padx=(0, 5), fill="x", expand=True)
 
         self.placeholder = "Rechercher dans Google Maps"
         self.search_entry.insert(0, self.placeholder)
@@ -35,21 +36,27 @@ class MapApp(tk.Tk):
             if self.search_entry.get() == self.placeholder:
                 self.search_entry.delete(0, "end")
                 self.search_entry.config(fg='black')
+
         def on_focus_out(event):
             if not self.search_entry.get():
                 self.search_entry.insert(0, self.placeholder)
                 self.search_entry.config(fg='grey')
+
         self.search_entry.bind("<FocusIn>", on_focus_in)
         self.search_entry.bind("<FocusOut>", on_focus_out)
         self.search_entry.bind("<Return>", self.rechercher_lieu)
 
         self.search_icon = ttk.Button(self.search_frame, text="🔍", width=3, command=self.rechercher_lieu)
-        self.search_icon.pack(side="left", padx=(0,3))
+        self.search_icon.pack(side="left", padx=(0, 3))
         self.send_btn = ttk.Button(self.search_frame, text="➤", width=3, command=self.rechercher_lieu)
-        self.send_btn.pack(side="left", padx=(0,6))
+        self.send_btn.pack(side="left", padx=(0, 6))
 
         self.map_widget = TkinterMapView(self, width=700, height=700)
         self.map_widget.pack(side="left", fill="both", expand=True)
+
+        # Activation du cache local de tuiles pour fluidité
+        self.map_widget.tile_cache_directory = "cache_tiles"  # crée ce dossier dans ton projet
+
         self.map_widget.set_position(46.603354, 1.888334)
         self.map_widget.set_zoom(6)
         self.map_widget.set_tile_server("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png")
@@ -76,14 +83,14 @@ class MapApp(tk.Tk):
         self.tab_ajout = ttk.Frame(self.options_frame)
         self.options_frame.add(self.tab_ajout, text="Ajout de lieu")
 
-        self.ajout_activé = tk.BooleanVar(value=False)
-        check_ajout = ttk.Checkbutton(self.tab_ajout, text="Activer ajout par clic sur la carte", variable=self.ajout_activé)
+        self.ajout_active = tk.BooleanVar(value=False)
+        check_ajout = ttk.Checkbutton(self.tab_ajout, text="Activer ajout par clic sur la carte", variable=self.ajout_active)
         check_ajout.pack()
 
         self.map_widget.add_left_click_map_command(self.clic_carte)
 
         btn_export = ttk.Button(self.tab_lieux, text="Exporter lieux...", command=self.exporter_lieux)
-        btn_export.pack(fill="x", pady=(5,0))
+        btn_export.pack(fill="x", pady=(5, 0))
 
         btn_import = ttk.Button(self.tab_lieux, text="Importer lieux...", command=self.importer_lieux)
         btn_import.pack(fill="x")
@@ -158,8 +165,9 @@ class MapApp(tk.Tk):
             sauvegarder_lieux(self.lieux)
 
     def clic_carte(self, coordinates_tuple):
-        if not self.ajout_activé.get():
+        if not self.ajout_active.get():
             return
+
         lat, lon = coordinates_tuple
         nom = simpledialog.askstring("Nom du lieu", "Nom du lieu :", initialvalue="Nouveau lieu")
         if not nom:
@@ -181,8 +189,8 @@ class MapApp(tk.Tk):
 
     def exporter_lieux(self):
         path = filedialog.asksaveasfilename(defaultextension=".json",
-                                            filetypes=[("Fichiers JSON", "*.json")],
-                                            title="Exporter les lieux")
+                                             filetypes=[("Fichiers JSON", "*.json")],
+                                             title="Exporter les lieux")
         if not path:
             return
         try:
@@ -193,8 +201,8 @@ class MapApp(tk.Tk):
 
     def importer_lieux(self):
         path = filedialog.askopenfilename(defaultextension=".json",
-                                          filetypes=[("Fichiers JSON", "*.json")],
-                                          title="Importer les lieux")
+                                           filetypes=[("Fichiers JSON", "*.json")],
+                                           title="Importer les lieux")
         if not path:
             return
         try:

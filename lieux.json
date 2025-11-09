@@ -26,5 +26,26 @@
     "nom": "Nouveau lieu",
     "date": null,
     "remarque": null
+  },
+  "4": {
+    "lat": 48.33589879550328,
+    "lon": 3.287904600773345,
+    "nom": "fff",
+    "date": null,
+    "remarque": null
+  },
+  "5": {
+    "lat": 46.72398902425259,
+    "lon": 2.294828140624986,
+    "nom": "Nouveau lieu",
+    "date": null,
+    "remarque": null
+  },
+  "6": {
+    "lat": 44.94343021088996,
+    "lon": 4.730359756835924,
+    "nom": "Nouveau lieu",
+    "date": null,
+    "remarque": null
   }
 }
