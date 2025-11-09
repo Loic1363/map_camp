@@ -1,10 +1,9 @@
-# Prérequis : installer tkintermapview
+# install tkintermapview
 # pip install tkintermapview
 
 import tkinter as tk
 from tkintermapview import TkinterMapView
 
-# Liste d'exemples : coordonnées (latitude, longitude) de lieux visités
 coordonnees_campings = [
     (48.858370, 2.294481),   # Paris
     (43.604652, 1.444209),   # Toulouse
@@ -16,20 +15,16 @@ def ajouter_points(map_widget, points):
     for lat, lon in points:
         map_widget.set_marker(lat, lon, text=f"Camping ({lat:.2f}, {lon:.2f})")
 
-# Création de la fenêtre Tkinter
 root = tk.Tk()
 root.title("Carte de la France - Campings visités")
 root.geometry("800x600")
 
-# Création du widget carte
 map_widget = TkinterMapView(root, width=800, height=600, corner_radius=0)
 map_widget.pack(fill="both", expand=True)
 
-# Afficher la France (centrée, avec un zoom adapté)
 map_widget.set_position(46.603354, 1.888334)  # Centre de la France
 map_widget.set_zoom(6)
 
-# Ajouter les points sur la carte
 ajouter_points(map_widget, coordonnees_campings)
 
 root.mainloop()

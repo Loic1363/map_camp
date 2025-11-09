@@ -54,8 +54,7 @@ class MapApp(tk.Tk):
         self.map_widget = TkinterMapView(self, width=700, height=700)
         self.map_widget.pack(side="left", fill="both", expand=True)
 
-        # Activation du cache local de tuiles pour fluidité
-        self.map_widget.tile_cache_directory = "cache_tiles"  # crée ce dossier dans ton projet
+        self.map_widget.tile_cache_directory = "cache_tiles"  
 
         self.map_widget.set_position(46.603354, 1.888334)
         self.map_widget.set_zoom(6)
